@@ -16,7 +16,14 @@ public class FlappyBird : MonoBehaviour {
     private Vector2 velocity = Vector2.zero;
     public float maxSpeed = 5f;
 
-    private SpriteRenderer spriteRenderer;
+    private bool isFlipped = false;
+    
+	public GameObject ammo;
+	public Transform ammoSpawnPoint;
+    private AmmoInfo ammoInfo;
+    private float ammoFireRate;
+    private float lastFiredTime;
+    private string ammoPoolKey;
     
     // Start is called before the first frame update
     void Start() {
@@ -30,7 +37,12 @@ public class FlappyBird : MonoBehaviour {
         float x1 =  mainCamera.WorldToScreenPoint(new Vector3(0f, 0f)).x;
         halfColliderScreenSize = x2 - x1;
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        ammoInfo = ammo.GetComponent<AmmoInfo>();
+        ammoFireRate = ammoInfo.fireRate;
+        lastFiredTime = ammoFireRate;
+        ammoPoolKey = ammoInfo.ammoPoolKey;
+        
+        AmmoPool.instance.CreateAmmoPool(ammoPoolKey, ammo, ammoInfo.ammoPoolSize);
     }
 
     // Update is called once per frame
@@ -46,10 +58,16 @@ public class FlappyBird : MonoBehaviour {
             rigidBody.AddForce(upForceWhenClick);
         }
 
-        // 스프라이트 flipping 일단 조절하고
-        bool flipSprite = spriteRenderer.flipX ? velocity.x > 0.01f : velocity.x < -0.01f;
-        if (flipSprite) {
-            spriteRenderer.flipX = !spriteRenderer.flipX;
+        // flipping 일단 조절하고
+        bool flip = isFlipped ? velocity.x > 0.01f : velocity.x < -0.01f;
+        if (flip) {
+            if (isFlipped) {
+                transform.rotation = Quaternion.AngleAxis(0f, Vector3.up);
+            } else {
+                transform.rotation = Quaternion.AngleAxis(180f, Vector3.up);
+            }
+
+            isFlipped = !isFlipped;
         }
 
         if (velocity.x < -0.01f && screenPos.x - halfColliderScreenSize <= 0.01f) {
@@ -59,5 +77,13 @@ public class FlappyBird : MonoBehaviour {
         }
         
         rigidBody.velocity = velocity;
+
+        lastFiredTime += Time.deltaTime;
+        if (lastFiredTime >= ammoFireRate) {
+            Transform ammoInstanceTransform = AmmoPool.instance.GetAmmo(ammoPoolKey).transform;
+            ammoInstanceTransform.position = ammoSpawnPoint.position;
+            ammoInstanceTransform.rotation = transform.rotation;
+            lastFiredTime = 0f;
+        }
     }
 }
