@@ -43,4 +43,11 @@ public class AmmoPool : MonoBehaviour {
 
         return item;
     }
+
+    public void RemoveAmmoPool(string key) {
+        if (pools.ContainsKey(key)) {
+            pools.Remove(key);
+            poolsCurrentItemIndexes.Remove(key);
+        }
+    }
 }
