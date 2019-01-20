@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2339620596746767265}
   - component: {fileID: 7012053850162772232}
   - component: {fileID: 8219720692523023461}
+  - component: {fileID: 2852049356043943916}
   m_Layer: 0
   m_Name: BirdAmmo
   m_TagString: Untagged
@@ -169,5 +170,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 871129ca344dc0f4fb1a96baa3904c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+--- !u!114 &2852049356043943916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2339620596746767270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b07e579b53f69ac46bc7fef2aa593817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class AmmoPool : MonoBehaviour {
+public class AmmoPool : MonoBehaviour, Damager.OnDoneDamageCallback {
     
     public static AmmoPool instance;
 
@@ -25,23 +25,36 @@ public class AmmoPool : MonoBehaviour {
         pools[key] = new GameObject[poolSize];
         poolsCurrentItemIndexes[key] = 0;
         GameObject[] pool = pools[key];
+
         for (int i = 0; i < poolSize; i++) {
-            pool[i] = Instantiate(ammo, poolsPosition, Quaternion.identity);
+            pool[i] = CreateAmmo(ammo, poolsPosition, Quaternion.identity);
         }
     }
 
+    private GameObject CreateAmmo(GameObject ammo, Vector2 position, Quaternion quaternion) {
+        GameObject go = Instantiate(ammo, position, quaternion);
+        Damager damager = go.GetComponent<Damager>();
+        damager.RegisterOnDoneDamageCallback(this);
+        return go;
+    }
+
     public GameObject GetAmmo(string key) {
-        GameObject[] pool = pools[key];
-        int currentIndex = poolsCurrentItemIndexes[key];
-        GameObject item = pool[currentIndex];
-        currentIndex++;
-        if (currentIndex < pool.Length) {
-            poolsCurrentItemIndexes[key] = currentIndex;
-        } else {
-            poolsCurrentItemIndexes[key] = 0;
+        if (pools.ContainsKey(key)) {
+            GameObject[] pool = pools[key];
+            int currentIndex = poolsCurrentItemIndexes[key];
+            
+            GameObject item = pool[currentIndex];
+            currentIndex++;
+            if (currentIndex < pool.Length) {
+                poolsCurrentItemIndexes[key] = currentIndex;
+            } else {
+                poolsCurrentItemIndexes[key] = 0;
+            }
+
+            return item;
         }
 
-        return item;
+        return null;
     }
 
     public void RemoveAmmoPool(string key) {
@@ -49,5 +62,9 @@ public class AmmoPool : MonoBehaviour {
             pools.Remove(key);
             poolsCurrentItemIndexes.Remove(key);
         }
+    }
+
+    public void OnDoneDamage(GameObject self) {
+        self.transform.position = poolsPosition;
     }
 }
