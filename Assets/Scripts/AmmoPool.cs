@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class AmmoPool : MonoBehaviour, Damager.OnDoneDamageCallback {
+public class AmmoPool : MonoBehaviour {
     
     public static AmmoPool instance;
 
-    private readonly Dictionary<string, GameObject[]> pools = new Dictionary<string, GameObject[]>();
+    private readonly Dictionary<string, List<Ammo>> pools = new Dictionary<string, List<Ammo>>();
     private readonly Dictionary<string, int> poolsCurrentItemIndexes = new Dictionary<string, int>();
     private readonly Vector2 poolsPosition = new Vector2(-20f, -20f);
 
@@ -17,35 +18,41 @@ public class AmmoPool : MonoBehaviour, Damager.OnDoneDamageCallback {
         }
     }
 
-    public void CreateAmmoPool(string key, GameObject ammo, int poolSize) {
+    public void CreateAmmoPool(string key, GameObject ammoObject, int poolSize) {
         if (poolSize <= 0) {
             return;
         }
-        
-        pools[key] = new GameObject[poolSize];
+
+        pools[key] = new List<Ammo>(poolSize);
         poolsCurrentItemIndexes[key] = 0;
-        GameObject[] pool = pools[key];
+        List<Ammo> pool = pools[key];
 
         for (int i = 0; i < poolSize; i++) {
-            pool[i] = CreateAmmo(ammo, poolsPosition, Quaternion.identity);
+            pool.Add(CreateAmmo(ammoObject, poolsPosition, Quaternion.identity));
         }
     }
 
-    private GameObject CreateAmmo(GameObject ammo, Vector2 position, Quaternion quaternion) {
-        GameObject go = Instantiate(ammo, position, quaternion);
-        Damager damager = go.GetComponent<Damager>();
-        damager.RegisterOnDoneDamageCallback(this);
-        return go;
+    private Ammo CreateAmmo(GameObject ammoObject, Vector2 position, Quaternion quaternion) {
+        GameObject go = Instantiate(ammoObject, position, quaternion);
+        Ammo ammo = go.GetComponent<Ammo>();
+        ammo.SetRecycledPosition(poolsPosition);
+        return ammo;
     }
 
-    public GameObject GetAmmo(string key) {
+    public Ammo GetAmmo(string key) {
         if (pools.ContainsKey(key)) {
-            GameObject[] pool = pools[key];
+            List<Ammo> pool = pools[key];
             int currentIndex = poolsCurrentItemIndexes[key];
+            Ammo item = pool[currentIndex];
+            // 가져온 애가 아직 recylced되지 않고 화면에 남아있는 애면 바로 새로운 ammo 만들어서 걔로 대체함.
+            if (!item.IsRecycled()) {
+                Ammo newItem = CreateAmmo(item.gameObject, poolsPosition, Quaternion.identity);
+                pool.Insert(currentIndex, newItem);
+                item = newItem;
+            }
             
-            GameObject item = pool[currentIndex];
             currentIndex++;
-            if (currentIndex < pool.Length) {
+            if (currentIndex < pool.Count) {
                 poolsCurrentItemIndexes[key] = currentIndex;
             } else {
                 poolsCurrentItemIndexes[key] = 0;
@@ -62,9 +69,5 @@ public class AmmoPool : MonoBehaviour, Damager.OnDoneDamageCallback {
             pools.Remove(key);
             poolsCurrentItemIndexes.Remove(key);
         }
-    }
-
-    public void OnDoneDamage(GameObject self) {
-        self.transform.position = poolsPosition;
     }
 }

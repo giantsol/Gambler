@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2339620596746767268}
   - component: {fileID: 2339620596746767269}
   - component: {fileID: 2339620596746767265}
-  - component: {fileID: 7012053850162772232}
   - component: {fileID: 8219720692523023461}
   - component: {fileID: 2852049356043943916}
   m_Layer: 0
@@ -145,21 +144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
---- !u!114 &7012053850162772232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2339620596746767270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0285bb5d585a06d46b5a44cbf143b896, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireRate: 0.5
-  ammoPoolSize: 5
-  ammoPoolKey: bird
 --- !u!114 &8219720692523023461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,3 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b07e579b53f69ac46bc7fef2aa593817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireRate: 0.5
+  ammoPoolSize: 5
+  ammoPoolKey: birdAmmo

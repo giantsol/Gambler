@@ -16,7 +16,19 @@ public class Damager : MonoBehaviour {
     private void Start() {
         enemiesLayer = LayerMask.NameToLayer("Enemies");
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.layer == enemiesLayer) {
+            GameObject otherObject = other.gameObject;
+            Damageable damageable = otherObject.GetComponent<Damageable>();
+            if (damageable != null) {
+                damageable.DoDamage(damage);
+
+                DispatchOnDoneDamage();
+            }
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.layer == enemiesLayer) {
             GameObject otherObject = other.gameObject;

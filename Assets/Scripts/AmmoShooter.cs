@@ -2,20 +2,25 @@
 
 public class AmmoShooter : MonoBehaviour {
     
-	public GameObject ammo;
+	public GameObject ammoObject;
 	public Transform ammoSpawnPoint;
-    private AmmoInfo ammoInfo;
     private float ammoFireRate;
     private float lastFiredTime;
     private string ammoPoolKey;
+    private int ammoPoolSize;
 
     private void Start() {
-        ammoInfo = ammo.GetComponent<AmmoInfo>();
-        ammoFireRate = ammoInfo.fireRate;
-        lastFiredTime = ammoFireRate;
-        ammoPoolKey = ammoInfo.ammoPoolKey;
+        InitiateAmmo(ammoObject);
         
-        AmmoPool.instance.CreateAmmoPool(ammoPoolKey, ammo, ammoInfo.ammoPoolSize);
+        AmmoPool.instance.CreateAmmoPool(ammoPoolKey, ammoObject, ammoPoolSize);
+    }
+
+    private void InitiateAmmo(GameObject ammoObject) {
+        Ammo ammo = ammoObject.GetComponent<Ammo>();
+        ammoFireRate = ammo.fireRate;
+        lastFiredTime = ammoFireRate;
+        ammoPoolKey = ammo.ammoPoolKey;
+        ammoPoolSize = ammo.ammoPoolSize;
     }
 
     private void Update() {
@@ -29,6 +34,6 @@ public class AmmoShooter : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        AmmoPool.instance.RemoveAmmoPool(ammoPoolKey);
+//        AmmoPool.instance.RemoveAmmoPool(ammoPoolKey);
     }
 }
