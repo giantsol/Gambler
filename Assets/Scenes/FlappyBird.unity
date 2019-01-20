@@ -112,6 +112,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &45998963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 45998964}
+  m_Layer: 0
+  m_Name: EnemySpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &45998964
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45998963}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.83, y: -1.97, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &462242227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1572,7 +1602,7 @@ GameObject:
   - component: {fileID: 1650146378}
   m_Layer: 8
   m_Name: FlappyChicken
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1816,25 +1846,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1788149057}
   m_CullTransparentMesh: 0
---- !u!1 &1912888512 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1577821616079405854, guid: 078f3b5b43982bb40967c163a752b92c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1577821614234197982}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1912888513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1912888512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cff5f93aa445364b91d6dc713fa9c87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalHealth: 100
 --- !u!1001 &1577821614234197982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1902,21 +1913,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1577821616079405848, guid: 078f3b5b43982bb40967c163a752b92c,
-        type: 3}
+    - target: {fileID: 1912888514, guid: 078f3b5b43982bb40967c163a752b92c, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1650146375}
-    - target: {fileID: 1577821616079405852, guid: 078f3b5b43982bb40967c163a752b92c,
-        type: 3}
-      propertyPath: m_Offset.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1577821616079405852, guid: 078f3b5b43982bb40967c163a752b92c,
-        type: 3}
-      propertyPath: m_AutoTiling
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 078f3b5b43982bb40967c163a752b92c, type: 3}
 --- !u!1001 &3358205902013232317
@@ -1936,6 +1936,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3358205901998388894, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
+        type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3358205901998388889, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
+        type: 3}
+      propertyPath: enemies.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3358205901998388889, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
         type: 3}
       propertyPath: gameOverText
@@ -1946,20 +1956,31 @@ PrefabInstance:
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 1184339934}
+    - target: {fileID: 3358205901998388889, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
+        type: 3}
+      propertyPath: enemySpawnPoint
+      value: 
+      objectReference: {fileID: 45998964}
+    - target: {fileID: 3358205901998388889, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
+        type: 3}
+      propertyPath: enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 1577821616079405854, guid: 078f3b5b43982bb40967c163a752b92c,
+        type: 3}
     - target: {fileID: 3358205901998388888, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 340.54556
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3358205901998388888, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 181.44325
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3358205901998388888, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3358205901998388888, guid: 3953fdad87b9a564d97ae679a4a6ddcf,
         type: 3}
@@ -2006,5 +2027,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3358205901998388891, guid: 3953fdad87b9a564d97ae679a4a6ddcf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3953fdad87b9a564d97ae679a4a6ddcf, type: 3}
