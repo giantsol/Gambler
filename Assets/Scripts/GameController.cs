@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour {
         scoreText.text = "Score: " + score;
     }
 
-    public void BirdDied() {
+    public void PlayerDied() {
         gameOverText.SetActive(true);
         gameOver = true;
     }

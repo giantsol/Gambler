@@ -5,8 +5,6 @@ public class CharacterController : MonoBehaviour {
     
     private Rigidbody2D rigidBody;
     
-    public Vector2 jumpForce = new Vector2(0, 200f);
-    
     // 카메라 시야 안에서만 움직일 수 있는지
     public bool isConstrainedInsideCamera = true;
     private float leftmostX;
@@ -15,14 +13,11 @@ public class CharacterController : MonoBehaviour {
     private Collider2D collider;
     private float halfWidth;
     
-    public float maxSpeed = 5f;
+    public float maxSpeed = 2f;
+    private bool isMovingRight = true;
     
     private bool isFlipped = false;
 
-    public bool jumpOnlyOnGround = true;
-    private bool isGrounded;
-    private int groundLayer;
-    
     private void Start() {
         rigidBody = GetComponent<Rigidbody2D>();
         
@@ -36,21 +31,31 @@ public class CharacterController : MonoBehaviour {
 
         collider = GetComponent<Collider2D>();
         halfWidth = collider.bounds.size.x / 2;
+    }
+
+    private void Update() {
+        if (GameController.instance.gameOver) {
+            return;
+        }
         
-        groundLayer = LayerMask.NameToLayer("Ground");
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) {
+            isMovingRight = !isMovingRight;
+        }
     }
 
     private void FixedUpdate() {
+        if (GameController.instance.gameOver) {
+            return;
+        }
+        
         Vector2 currentPos = transform.position;
         Vector2 velocity = rigidBody.velocity;
         
         // 일단 키 input 받은거대로 velocity에 적용
-        velocity.x = Input.GetAxis(STRING_HORIZONTAL) * maxSpeed;
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) {
-            if (!jumpOnlyOnGround || (jumpOnlyOnGround && isGrounded)) {
-                velocity.y = 0f;
-                rigidBody.AddForce(jumpForce);
-            }
+        if (isMovingRight) {
+            velocity.x = maxSpeed;
+        } else {
+            velocity.x = -maxSpeed;
         }
         
         // flipping 일단 조절하고
@@ -75,15 +80,4 @@ public class CharacterController : MonoBehaviour {
         rigidBody.velocity = velocity;
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.layer == groundLayer) {
-            isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D other) {
-        if (other.gameObject.layer == groundLayer) {
-            isGrounded = false;
-        }
-    }
 }

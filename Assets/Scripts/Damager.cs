@@ -8,29 +8,18 @@ public class Damager : MonoBehaviour {
     }
 
     public int damage = 1;
-    
-    private int enemiesLayer;
+
+    public string opponentLayerName;
+    private int opponentLayer;
 
     private readonly List<OnDoneDamageCallback> onDoneDamageCallbacks = new List<OnDoneDamageCallback>();
 
     private void Start() {
-        enemiesLayer = LayerMask.NameToLayer("Enemies");
+        opponentLayer = LayerMask.NameToLayer(opponentLayerName);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.layer == enemiesLayer) {
-            GameObject otherObject = other.gameObject;
-            Damageable damageable = otherObject.GetComponent<Damageable>();
-            if (damageable != null) {
-                damageable.DoDamage(damage);
-
-                DispatchOnDoneDamage();
-            }
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.layer == enemiesLayer) {
+        if (other.gameObject.layer == opponentLayer) {
             GameObject otherObject = other.gameObject;
             Damageable damageable = otherObject.GetComponent<Damageable>();
             if (damageable != null) {

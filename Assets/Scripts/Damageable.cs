@@ -18,6 +18,8 @@ public class Damageable : MonoBehaviour {
             animator.SetTrigger("Die");
             isDead = true;
             gameObject.layer = LayerMask.NameToLayer("Dead");
+        } else {
+            animator.SetTrigger("Hurt");
         }
     }
     

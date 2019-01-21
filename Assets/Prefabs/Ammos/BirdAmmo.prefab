@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  opponentLayerName: Enemies
 --- !u!114 &2852049356043943916
 MonoBehaviour:
   m_ObjectHideFlags: 0

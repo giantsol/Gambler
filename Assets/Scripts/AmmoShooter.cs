@@ -24,6 +24,10 @@ public class AmmoShooter : MonoBehaviour {
     }
 
     private void Update() {
+        if (GameController.instance.gameOver) {
+            return;
+        }
+        
         lastFiredTime += Time.deltaTime;
         if (lastFiredTime >= ammoFireRate) {
             Transform ammoInstanceTransform = AmmoPool.instance.GetAmmo(ammoPoolKey).transform;
